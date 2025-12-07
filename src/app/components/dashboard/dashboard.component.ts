@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -31,7 +31,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   async ngOnInit() {
@@ -45,6 +46,7 @@ export class DashboardComponent implements OnInit {
       if (!isAuth) {
         console.warn('Dashboard: User not authenticated, redirecting to login');
         this.loading = false;
+        this.cdr.detectChanges();
         this.router.navigate(['/login']);
         return;
       }
@@ -65,12 +67,16 @@ export class DashboardComponent implements OnInit {
         
         console.log('Dashboard: User loaded successfully', this.user);
         this.loading = false;
+        console.log('Dashboard: Loading set to false, user:', this.user ? 'exists' : 'null');
         this.setGreeting();
+        this.cdr.detectChanges(); // Force change detection
+        console.log('Dashboard: Change detection triggered');
         
         // Update time every minute
         setInterval(() => {
           this.currentTime = new Date();
           this.setGreeting();
+          this.cdr.detectChanges();
         }, 60000);
       } catch (userError: any) {
         console.error('Dashboard: Error fetching user:', userError);
@@ -94,6 +100,7 @@ export class DashboardComponent implements OnInit {
               console.log('Dashboard: User loaded from token fallback', this.user);
               this.loading = false;
               this.setGreeting();
+              this.cdr.detectChanges(); // Force change detection
             } else {
               throw new Error('Invalid token format');
             }
@@ -103,12 +110,14 @@ export class DashboardComponent implements OnInit {
         } catch (fallbackError) {
           console.error('Dashboard: Fallback user retrieval failed:', fallbackError);
           this.loading = false;
+          this.cdr.detectChanges();
           this.router.navigate(['/login']);
         }
       }
     } catch (error) {
       console.error('Dashboard: Error loading dashboard:', error);
       this.loading = false;
+      this.cdr.detectChanges();
       this.router.navigate(['/login']);
     }
   }
