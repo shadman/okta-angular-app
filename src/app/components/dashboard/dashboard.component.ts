@@ -16,10 +16,10 @@ export class DashboardComponent implements OnInit {
   currentTime = new Date();
   greeting = '';
   stats = [
-    { label: 'Projects', value: 12, icon: '📊', color: '#667eea' },
-    { label: 'Tasks', value: 48, icon: '✅', color: '#f5576c' },
-    { label: 'Messages', value: 23, icon: '💬', color: '#4ade80' },
-    { label: 'Reports', value: 7, icon: '📈', color: '#fbbf24' }
+    { label: 'Projects', value: 12, icon: '📊', color: '#3b82f6' },
+    { label: 'Tasks', value: 48, icon: '✅', color: '#06b6d4' },
+    { label: 'Messages', value: 23, icon: '💬', color: '#10b981' },
+    { label: 'Reports', value: 7, icon: '📈', color: '#8b5cf6' }
   ];
   recentActivities = [
     { action: 'Completed project review', time: '2 hours ago', icon: '✓' },
