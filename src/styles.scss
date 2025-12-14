@@ -50,3 +50,17 @@ body.dark-theme {
     color: #e4e4e4 !important;
   }
 }
+
+
+#okta-sign-in.auth-container .button,
+#okta-sign-in.auth-container .button-primary {
+  background: linear-gradient(#cf142b, #cf142b) !important;
+}
+
+#okta-sign-in .auth-header {
+  display: none !important;
+}
+
+#okta-sign-in .siw-main-footer .footer-info {
+  display: none !important;
+}
