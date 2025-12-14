@@ -1,7 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import OktaSignIn from '@okta/okta-signin-widget';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   user: any = null;
   loading = true;
   currentTime = new Date();
@@ -28,6 +29,8 @@ export class DashboardComponent implements OnInit {
     { action: 'Attended virtual meeting', time: '2 days ago', icon: '📹' }
   ];
   isDarkTheme = false;
+  showResetModal = false;
+  private resetWidget: OktaSignIn | null = null;
 
   constructor(
     private authService: AuthService,
@@ -122,6 +125,13 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    if (this.resetWidget) {
+      this.resetWidget.remove();
+      this.resetWidget = null;
+    }
+  }
+
   setGreeting() {
     const hour = this.currentTime.getHours();
     if (hour < 12) {
@@ -136,6 +146,80 @@ export class DashboardComponent implements OnInit {
   toggleTheme() {
     this.isDarkTheme = !this.isDarkTheme;
     document.body.classList.toggle('dark-theme', this.isDarkTheme);
+  }
+
+  openResetPassword() {
+    this.showResetModal = true;
+    this.cdr.detectChanges();
+    this.renderResetWidget();
+  }
+
+  closeResetPassword() {
+    this.showResetModal = false;
+    if (this.resetWidget) {
+      this.resetWidget.remove();
+      this.resetWidget = null;
+    }
+    this.cdr.detectChanges();
+  }
+
+  private renderResetWidget() {
+    if (this.resetWidget) {
+      this.resetWidget.remove();
+    }
+
+    const userEmail = this.user?.email || this.user?.preferred_username || '';
+
+    this.resetWidget = new OktaSignIn({
+      baseUrl: this.authService.getOktaAuth().options.issuer!.split('/oauth2')[0],
+      clientId: this.authService.getOktaAuth().options.clientId!,
+      redirectUri: this.authService.getOktaAuth().options.redirectUri!,
+      authParams: {
+        issuer: this.authService.getOktaAuth().options.issuer!,
+        scopes: this.authService.getOktaAuth().options.scopes,
+        pkce: this.authService.getOktaAuth().options.pkce
+      },
+      features: {
+        registration: false,
+        rememberMe: false
+      },
+      i18n: {
+        en: {
+          'forgotpassword.title': 'Reset Your Password',
+          'forgotpassword.submit': 'Send Reset Email',
+          'forgotpassword.email.placeholder': 'Email',
+          'forgotpassword.email.tooltip': 'Email'
+        }
+      }
+    });
+
+    // Render the widget and auto-click forgot password link
+    this.resetWidget.renderEl(
+      { el: '#reset-password-widget' },
+      () => {
+        // Widget rendered successfully
+        setTimeout(() => {
+          // Click the forgot password link
+          const forgotLink = document.querySelector('[data-se="forgot-password"], .js-forgot-password') as HTMLElement;
+          if (forgotLink) {
+            forgotLink.click();
+            
+            // After clicking, prefill the email field
+            setTimeout(() => {
+              const emailInput = document.querySelector('#account-recovery-username, input[name="username"]') as HTMLInputElement;
+              if (emailInput && userEmail) {
+                emailInput.value = userEmail;
+                emailInput.dispatchEvent(new Event('input', { bubbles: true }));
+                emailInput.dispatchEvent(new Event('change', { bubbles: true }));
+              }
+            }, 300);
+          }
+        }, 200);
+      },
+      (err: any) => {
+        console.error('Error rendering reset widget:', err);
+      }
+    );
   }
 
   async logout() {

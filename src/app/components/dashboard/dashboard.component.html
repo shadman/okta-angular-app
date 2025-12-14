@@ -17,6 +17,7 @@
         <div class="user-avatar" [title]="user.name">
           {{ getInitials() }}
         </div>
+        <button class="reset-btn" (click)="openResetPassword()">Reset Password</button>
         <button class="logout-btn" (click)="logout()">Logout</button>
       </div>
     </header>
@@ -124,6 +125,17 @@
           "Stay organized by prioritizing your tasks. Focus on completing high-impact items first to maximize your productivity."
         </p>
       </section>
+    </div>
+  </div>
+
+  <!-- Reset Password Modal -->
+  <div class="modal-backdrop" *ngIf="showResetModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Reset Password</h3>
+        <button class="close-btn" (click)="closeResetPassword()">✕</button>
+      </div>
+      <div id="reset-password-widget"></div>
     </div>
   </div>
 </div>
