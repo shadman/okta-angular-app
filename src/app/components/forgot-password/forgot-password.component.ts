@@ -32,7 +32,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
         selfServiceUnlock: true,
         multiOptionalFactorEnroll: false
       },
-      logo: ' ',
+      //logo: ' ',
       i18n: {
         en: {
           'primaryauth.title': 'Reset Password',
