@@ -58,7 +58,8 @@ body.dark-theme {
 }
 
 #okta-sign-in .auth-header {
-  display: none !important;
+  border-bottom:0px solid #FFFFFF !important;
+  padding-bottom:20px !important;
 }
 
 #okta-sign-in .siw-main-footer .footer-info {
