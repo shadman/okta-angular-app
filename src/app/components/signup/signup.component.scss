@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  background: linear-gradient(135deg, #cf142b 0%, #e11d3b 100%);
   padding: 20px;
   animation: fadeIn 0.5s ease-in;
 }
@@ -41,18 +41,33 @@
   padding-top: 20px;
   border-top: 1px solid #eee;
   
+  .signup-instruction {
+    color: #f5576c;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: #fff3f5;
+    border-radius: 8px;
+    
+    strong {
+      color: #f5576c;
+      font-weight: 700;
+    }
+  }
+  
   p {
     color: #666;
     font-size: 14px;
     
     a {
-      color: #dc2626;
+      color: #f5576c;
       text-decoration: none;
       font-weight: 600;
       transition: color 0.3s ease;
       
       &:hover {
-        color: #ef4444;
+        color: #f093fb;
         text-decoration: underline;
       }
     }

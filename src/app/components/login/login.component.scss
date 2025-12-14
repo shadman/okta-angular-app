@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  background: linear-gradient(135deg, #cf142b 0%, #e11d3b 100%);
   padding: 20px;
   animation: fadeIn 0.5s ease-in;
 }
@@ -46,24 +46,24 @@
     font-size: 14px;
     
     a {
-      color: #dc2626;
+      color: #cf142b;
       text-decoration: none;
       font-weight: 600;
       transition: color 0.3s ease;
       
       &:hover {
-        color: #ef4444;
+        color: #e11d3b;
         text-decoration: underline;
       }
     }
     
     .forgot-password-link {
-      color: #dc2626;
+      color: #cf142b;
       font-size: 13px;
       font-weight: 500;
       
       &:hover {
-        color: #ef4444;
+        color: #e11d3b;
       }
     }
   }
@@ -86,6 +86,16 @@
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+/* Force hide any registration/enrollment forms */
+#sign-in-widget {
+  [data-se="o-form-content-enroll"],
+  [data-se="enroll"],
+  .registration-container,
+  .enroll-container {
+    display: none !important;
   }
 }
 

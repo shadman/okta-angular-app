@@ -14,6 +14,25 @@ body {
   padding: 0;
 }
 
+/* Okta widget button theming */
+.okta-form-button, 
+.button-primary, 
+input[type="submit"].button-primary, 
+.auth-button, 
+.primary-auth .button {
+  background-color: #cf142b !important;
+  border-color: #cf142b !important;
+  color: #fff !important;
+}
+
+.okta-form-button:hover,
+.button-primary:hover,
+input[type="submit"].button-primary:hover,
+.auth-button:hover {
+  background-color: #b01024 !important;
+  border-color: #b01024 !important;
+}
+
 /* Dark theme support */
 body.dark-theme {
   .stat-value {
