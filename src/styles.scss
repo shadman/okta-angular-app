@@ -52,6 +52,7 @@ body.dark-theme {
 }
 
 
+/// CUSTOM - BY SHADMAN
 #okta-sign-in.auth-container .button,
 #okta-sign-in.auth-container .button-primary {
   background: linear-gradient(#cf142b, #cf142b) !important;
@@ -63,5 +64,14 @@ body.dark-theme {
 }
 
 #okta-sign-in .siw-main-footer .footer-info {
+  display: none !important;
+}
+
+#okta-sign-in {
+  //border:0px solid #FFFFFF !important;
+  margin-top: 0px !important;
+}
+
+#okta-sign-in.auth-container h2, #okta-sign-in.auth-container h3.okta-form-title {
   display: none !important;
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import OktaSignIn from '@okta/okta-signin-widget';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -167,21 +168,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.resetWidget) {
       this.resetWidget.remove();
     }
-
     const userEmail = this.user?.email || this.user?.preferred_username || '';
 
     this.resetWidget = new OktaSignIn({
-      baseUrl: this.authService.getOktaAuth().options.issuer!.split('/oauth2')[0],
-      clientId: this.authService.getOktaAuth().options.clientId!,
-      redirectUri: this.authService.getOktaAuth().options.redirectUri!,
+      baseUrl: environment.okta.issuer.split('/oauth2')[0],
+      clientId: environment.okta.clientId,
+      redirectUri: environment.okta.redirectUri,
+      //username: 'shan.jami@cc.com',
+      useInteractionCodeFlow: true, // Required for inline widget (no redirect)
       authParams: {
-        issuer: this.authService.getOktaAuth().options.issuer!,
-        scopes: this.authService.getOktaAuth().options.scopes,
-        pkce: this.authService.getOktaAuth().options.pkce
+        issuer: environment.okta.issuer,
+        scopes: environment.okta.scopes,
+        pkce: environment.okta.pkce
       },
       features: {
-        registration: false,
-        rememberMe: false
+        registration: true, // Explicitly enable registration on signup page
+        rememberMe: true,
       },
       i18n: {
         en: {
@@ -194,14 +196,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
 
     // Render the widget and auto-click forgot password link
-    this.resetWidget.renderEl(
-      { el: '#reset-password-widget' },
+    this.resetWidget.renderEl({ 
+      el: '#reset-password-widget'
+    },
       () => {
         // Widget rendered successfully
+        /*
         setTimeout(() => {
           // Click the forgot password link
           const forgotLink = document.querySelector('[data-se="forgot-password"], .js-forgot-password') as HTMLElement;
           if (forgotLink) {
+            console.log('4');
             forgotLink.click();
             
             // After clicking, prefill the email field
@@ -214,12 +219,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
               }
             }, 300);
           }
-        }, 200);
+        }, 200);*/
       },
       (err: any) => {
         console.error('Error rendering reset widget:', err);
       }
     );
+    
   }
 
   async logout() {

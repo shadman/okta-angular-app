@@ -20,6 +20,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
       baseUrl: environment.okta.issuer.split('/oauth2')[0],
       clientId: environment.okta.clientId,
       redirectUri: environment.okta.redirectUri,
+      //username: 'shan.jami@cc.com', 
       useInteractionCodeFlow: true,
       authParams: {
         issuer: environment.okta.issuer,
